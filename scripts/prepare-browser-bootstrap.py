@@ -31,6 +31,7 @@ from browser_objective_assets import objective_asset_roots
 from browser_spawn_safety import apply_spawn_safety
 from browser_endgame import apply_endgame_timing
 from browser_player_health import apply_player_health
+from browser_minefields import apply_minefields
 from weapon_balance import apply_weapon_balance, load_profile
 from browser_remix_assets import PACK as REMIX_PACK, apply_owner_pack
 
@@ -197,6 +198,7 @@ try:
         data = apply_spawn_safety(name, data)
         data = apply_endgame_timing(name, data)
         data = apply_player_health(name, data)
+        data = apply_minefields(name, data)
         if name == "default_mp.cfg":
             data = default_cfg
         if name == "ui/options_shoot.menu":

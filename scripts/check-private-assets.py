@@ -32,6 +32,7 @@ from browser_spawn_safety import apply_spawn_safety
 from browser_endgame import SCRIPTS as ENDGAME_SCRIPTS, apply_endgame_timing
 from browser_player_health import apply_player_health
 from browser_remix_assets import PACK as REMIX_PACK, apply_owner_pack, material_textures
+from browser_minefields import SCRIPT as MINEFIELDS_SCRIPT, apply_minefields
 from browser_sound_assets import (ENDGAME_MUSIC_FILE, ENDGAME_MUSIC_OWNER_FILE, ENDGAME_MUSIC_TABLE,
                                   HIT_SOUND_ALIAS, HIT_SOUND_FILE, HIT_SOUND_OWNER_FILE, HIT_SOUND_TABLE,
                                   LASTMINUTE_MUSIC_FILE, LASTMINUTE_MUSIC_TABLE, lastminute_owner_file,
@@ -192,6 +193,8 @@ try:
                     assert data == apply_player_health(name, apply_endgame_timing(name, expected)), name
                 elif name in ENDGAME_SCRIPTS:
                     assert data == apply_player_health(name, apply_endgame_timing(name, original)), name
+                elif name == MINEFIELDS_SCRIPT:
+                    assert data == apply_minefields(name, original), name
                 elif name == "ui_mp/createserver.menu":
                     assert data == apply_bot_menu(original), name
                 elif name == "ui_mp/joinserver.menu":

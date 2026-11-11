@@ -6913,3 +6913,44 @@ host was saturated.
 Validation: `test-room-maps.py` (the window through the real `GET /rooms`
 handler, an engine stopping while it is asked; the old 2 s window and a
 dropped process check each fail it). Not measured: the Pi itself.
+
+## Minefields kill again, or not with a switch — 2026-11-11
+
+Stepping into a map's minefield clicked and blew up but did no harm. The
+retail `maps/mp/_minefields.gsc` calls `radiusDamage`, and the decompiled
+`GScr_RadiusDamage` passed `NULL` as the attacker; `G_RadiusDamage` returns at
+once without one. Retail passes the world entity, 1022, as inflictor and
+attacker. The same call is S&D's bomb, which was harmless too. The C4, the
+S-Mine and grenades take the missile path with their thrower as attacker and
+were not affected.
+
+Script `radiusDamage` hurts as the world again. A minefield kills by default;
+`set scr_minefields_harmless "1"` (in `server.cfg`, which now lists it at 0)
+keeps the click and the blast without the damage. `browser_minefields.py` puts
+the blast's damage behind the switch in the privately derived
+`_minefields.gsc`; S&D's bomb and `setPlayerIgnoreRadiusDamage` are unchanged.
+The renderer archive changes, so the manifest has to be regenerated with the
+owner's assets.
+
+Validation:
+
+- `test-minefields.py` (new, in `test-static.sh` and the Pi release checks):
+  the patch in both line endings, a changed retail script refused, other
+  scripts untouched, the engine's world attacker and the retail script with
+  the owner's files; 5 mutants fail, and the engine check fails on the old
+  call.
+- `test-minefields-runtime.py` (new) on Brecourt through the dedicated server,
+  with a test client placed in a minefield found from the map's bounds: by
+  default it clicks and kills, with the switch it clicks and spares, a script
+  blast hurts and kills, `setPlayerIgnoreRadiusDamage` spares, and the client
+  respawns after each death; 13 checks. The previous engine fails 4 of them.
+- `check-private-assets.py`, `test-placed-explosives-runtime.py` on Brecourt
+  and `test-dropped-weapon-runtime.py` pass. Re-validated on the rebased base,
+  `test-static.sh` runs 215 of its 225 checks: the ten failures
+  (`test-web-point-lights.cjs` and the materials, effects, scene-fx,
+  sun-shadow, viewmodel, combat-presentation, grenade-explosion and
+  static-vertex-cache checks) come with the merged graphics and C4-removal
+  work and fail identically on a clean checkout of that base.
+  `test-browser-packet-pacing.py`, which failed when this was first measured,
+  passes on the rebased base. `test-browser-classes-runtime.py` fails the
+  same two Axis checks.

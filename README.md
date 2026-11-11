@@ -294,6 +294,9 @@ Performance depends on the player's hardware, browser and match load.
 - **Cover penetration:** material, thickness and weapon power decide how much
   damage a bullet keeps through cover; FMJ goes deeper.
 - **Mounted MG42:** sustained fire builds heat, forces cooling and increases recoil.
+- **Minefields** at a map's edges kill, as in the original game. With
+  `set scr_minefields_harmless "1"` in `server.cfg` they click and blow up
+  without harm.
 - **Safer respawns:** occupied spawns and those exposed to nearby enemies are
   avoided when safer ones exist. TDM adds a three-second respawn countdown.
 - **Movement and feedback:** crouch toggle, prone crawling, obstacle-checked

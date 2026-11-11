@@ -1650,7 +1650,7 @@ void GScr_RadiusDamage(void)
     min_damage = Scr_GetFloat(3);
 
     level.bPlayerIgnoreRadiusDamage = level.bPlayerIgnoreRadiusDamageLatched;
-    G_RadiusDamage(origin, &g_entities[1022], NULL, max_damage, min_damage, range, NULL, 0xe);
+    G_RadiusDamage(origin, &g_entities[1022], &g_entities[1022], max_damage, min_damage, range, NULL, 0xe);
     level.bPlayerIgnoreRadiusDamage = 0;
     return;
 }
